@@ -11,8 +11,8 @@ MenuMaker Lite provides and easy way to create responsive drop down, flyout, and
 
 == Description ==
 
-MenuMaker Lite allows you to create multi level, responsive navigations without having to know all the CSS and jQuery. 
-Create a menu using the Wordpress menu system and then use MenuMaker Lite to design a responsive, dynamic navigation for your website. 
+MenuMaker Lite allows you to create multi-level, responsive navigations without having to know all the CSS and jQuery. 
+Create a menu structure using the Wordpress menu system and then use MenuMaker Lite to design a responsive, dynamic navigation for your website. 
 
 Included in the plugin are 3 professionaly designed menu themes: Drop Down, Flyout, and Accordion. Select one of these themes and 
 customize the appearance of your menu with and easy to use interface.
