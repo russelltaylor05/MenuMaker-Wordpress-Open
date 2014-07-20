@@ -1,0 +1,9 @@
+rm -r ~/Desktop/cssmenumaker
+cd ..
+cp -R cssmenumaker ~/Desktop
+cd ~/Desktop/cssmenumaker
+rm -rf .git
+rm build
+cd ..
+rm -r ~/wp_plugins/cssmenumaker/trunk/*
+cp -r cssmenumaker/* ~/wp_plugins/cssmenumaker/trunk
