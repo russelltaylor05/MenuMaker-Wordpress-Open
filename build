@@ -7,3 +7,5 @@ rm build
 cd ..
 rm -r ~/wp_plugins/cssmenumaker/trunk/*
 cp -r cssmenumaker/* ~/wp_plugins/cssmenumaker/trunk
+
+# (SVN instructions) https://wordpress.org/plugins/about/svn/
