@@ -42,6 +42,14 @@ function ajax_get_menu_json() {
   die();
 }  
 
+// Base CSS Styles
+add_action('wp_enqueue_scripts', 'cssmenumaker_base_styles');
+function cssmenumaker_base_styles() {
+  wp_register_style( 'cssmenumaker-base-styles', plugins_url().'/cssmenumaker/css/menu_styles.css', array(), '', 'all' );
+  wp_enqueue_style( 'cssmenumaker-base-styles');
+}
+
+
 
 /* 
  * This filter modifies the HTML output of our menus before printing to the screen
@@ -92,17 +100,30 @@ function cssmenumaker_modify_nav_menu_args($args)
       $args['items_wrap'] = '<ul id="%1$s" class="%2$s">%3$s</ul>';
       $args['depth'] = $menu_settings->depth;            
       $args['walker'] = new CSS_Menu_Maker_Walker();
-
-      wp_enqueue_style( 'cssmenumaker-base-styles', plugins_url().'/cssmenumaker/css/menu_styles.css');
-      wp_enqueue_style("dynamic-css-{$available_menu->ID}", admin_url('admin-ajax.php')."?action=dynamic_css&selected={$available_menu->ID}");
-      if($menu_js) {
-        wp_enqueue_script("dynamic-script-{$available_menu->ID}", admin_url('admin-ajax.php')."?action=dynamic_script&selected={$available_menu->ID}");    
-      }            
+           
   	}
   }
 
 	return $args;
 }
+
+/*  
+ * Add all Menu's CSS/jQuery to the header 
+ */
+add_action('wp_enqueue_scripts', 'cssmenumaker_enqueue_dep');
+function cssmenumaker_enqueue_dep()
+{
+  $available_menus = get_posts(array("post_type" => "cssmenu", 'post_status' => 'publish'));  
+  foreach($available_menus as $id => $current_menu) {
+    wp_register_style("dynamic-css-{$current_menu->ID}", admin_url('admin-ajax.php')."?action=dynamic_css&selected={$current_menu->ID}", array(), '', 'all');
+    wp_enqueue_style("dynamic-css-{$current_menu->ID}");
+    $menu_js = get_post_meta($current_menu->ID, "cssmenu_js", true);
+    if($menu_js) {
+      wp_enqueue_script("dynamic-script-{$current_menu->ID}", admin_url('admin-ajax.php')."?action=dynamic_script&selected={$current_menu->ID}", array( 'jquery' ));    
+    }
+  }
+}
+
 
 
 /* 
@@ -124,17 +145,6 @@ function cssmenumaker_print_menu($menu_id = 0)
     'cssmenumaker_flag' => true,
     'cssmenumaker_id' => $menu_id
   ));
-
-  $menu_css = get_post_meta($menu_id, "cssmenu_css", true);
-  $menu_js = get_post_meta($menu_id, "cssmenu_js", true);    
-  if($menu_css) {
-    wp_enqueue_style('cssmenumaker-base-styles', plugins_url().'/cssmenumaker/css/menu_styles.css');
-    wp_enqueue_style("dynamic-css-{$menu_id}", admin_url('admin-ajax.php')."?action=dynamic_css&selected={$menu_id}");      
-  }
-  if($menu_js) {
-    wp_enqueue_script("dynamic-script-{$menu_id}", admin_url('admin-ajax.php')."?action=dynamic_script&selected={$menu_id}");    
-  }    
-
 }
 
 
